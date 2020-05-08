@@ -8,6 +8,7 @@ namespace Escola.Dominio.Alunos
 {
     public sealed partial class Aluno : Entity
     {
+        private Aluno() { }
         private Aluno(long id, NomeAluno nome, Email email, DateTime dataNascimento, ESexo sexo)
             : base(id)
         {

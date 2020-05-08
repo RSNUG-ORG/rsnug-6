@@ -5,9 +5,9 @@ namespace Escola.Dominio.Shared
 {
     public sealed class NomeAluno : ValueObject
     {
-        public NomeAluno(string nome, string sobrenome)
+        public NomeAluno(string primeiro, string sobrenome)
         {
-            Primeiro = nome;
+            Primeiro = primeiro;
             Sobrenome = sobrenome;
         }
 

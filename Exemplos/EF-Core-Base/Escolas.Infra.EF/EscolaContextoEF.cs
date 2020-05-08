@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Escola.Dominio.Alunos;
+using Escola.Infra.EF.EntityConfigurations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
 
@@ -6,11 +8,18 @@ namespace Escola.Infra.EF
 {
     public class EscolaContextoEF : DbContext
     {
-        public const string DEFAULT_SCHEMA = "matriculas";
+        public const string DEFAULT_SCHEMA = "Matriculas";
+
+        public DbSet<Aluno> Alunos { get; set; }
 
         public EscolaContextoEF(DbContextOptions<EscolaContextoEF> options) : base(options)
         {
             System.Diagnostics.Debug.WriteLine("EscolaContextoEF::ctor ->" + this.GetHashCode());
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new AlunoEntityTypeConfiguration());
         }
     }
 
