@@ -61,6 +61,7 @@ namespace Escola.API
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddUserSecrets<Program>()
                 .AddEnvironmentVariables();
             var config = builder.Build();
 
