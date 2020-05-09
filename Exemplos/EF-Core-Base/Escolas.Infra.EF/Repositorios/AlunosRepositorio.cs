@@ -26,9 +26,10 @@ namespace Escolas.Infra.EF.Repositorios
             return (await _contexto.Alunos.AddAsync(aluno)).Entity;
         }
 
+        public async Task<Maybe<Aluno>> RecuperarAsync(long id)
+            => await _contexto.Alunos.FirstOrDefaultAsync(c => c.Id == id);
+
         public async Task<Maybe<Aluno>> RecuperarPorEmailAsync(Email email)
-        {
-            return  await _contexto.Alunos.FirstOrDefaultAsync(c=> c.Email == email);
-        }
+            => await _contexto.Alunos.FirstOrDefaultAsync(c=> c.Email == email);
     }
 }

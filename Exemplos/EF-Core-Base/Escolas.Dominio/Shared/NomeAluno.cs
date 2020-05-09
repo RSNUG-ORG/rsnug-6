@@ -38,5 +38,7 @@ namespace Escola.Dominio.Shared
         }
 
         public static implicit operator string(NomeAluno nome) => $"{nome.Primeiro} {nome.Sobrenome}";
+
+        public override string ToString() => this;
     }
 }

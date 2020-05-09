@@ -8,6 +8,7 @@ namespace Escola.Dominio.Alunos
     {
         Task<Aluno> AdicionarAsync(Aluno aluno);
         Task<Maybe<Aluno>> RecuperarPorEmailAsync(Email email);
+        Task<Maybe<Aluno>> RecuperarAsync(long id);
         //Aluno Atualizar(Aluno aluno);
         //Resultado<Aluno, Falha> RecuperarPorEmail(string email);
         //Resultado<Aluno, Falha> Recuperar(string id);

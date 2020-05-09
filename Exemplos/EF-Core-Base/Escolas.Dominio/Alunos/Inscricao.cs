@@ -5,8 +5,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("DDDTalk.Dominio.Infra.SqlServer.Dapper")]
 namespace Escola.Dominio.Alunos
 {
-    public sealed partial class Aluno
-    {
+   
         public sealed class Inscricao
         {
             internal Inscricao(string id, string alunoId, Turma turma, DateTime inscritoEm)
@@ -29,5 +28,5 @@ namespace Escola.Dominio.Alunos
             //    return new Inscricao(Guid.NewGuid().ToString(), alunoId, turma, DateTime.Now);
             //}
         }
-    }
+   
 }

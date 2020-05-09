@@ -30,15 +30,22 @@ namespace Escolas.API.Controllers
         }
 
         [HttpGet]
-        [Route("alunos/{id:int}")]
+        [Route("{id:int}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(AlunoViewModel), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<AlunoViewModel>> AlunoPorId(int id)
         {
-            //if (id <= 0)
-            //    return BadRequest();
-            return NotFound();
+            if (id <= 0)
+                return BadRequest();
+            if(await _alunosRepositorio.RecuperarAsync(id) is var aluno && aluno.HasNoValue)
+                return NotFound();
+
+            return Ok(new AlunoViewModel(
+                aluno.Value.Nome, 
+                aluno.Value.Email, 
+                aluno.Value.DataNascimento, 
+                aluno.Value.Sexo.ToString()));
         }
 
         [Route("")]

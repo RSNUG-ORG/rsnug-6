@@ -1,4 +1,5 @@
-﻿using static Escola.Dominio.Alunos.Aluno;
+﻿using Escola.Dominio.Alunos;
+using static Escola.Dominio.Alunos.Aluno;
 
 namespace Escola.Dominio.Servicos
 {

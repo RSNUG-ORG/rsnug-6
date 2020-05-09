@@ -1,19 +1,9 @@
-﻿namespace Escola.Dominio.Turmas
-{
-    public sealed class Turma
-    {
-        internal Turma(string id, string descricao, int limiteIdade, int limiteAlunos, int totalInscritos, int duracaoEmMeses, decimal valorMensal)
-        {
-            Id = id;
-            Descricao = descricao;
-            LimiteIdade = limiteIdade;
-            LimiteAlunos = limiteAlunos;
-            TotalInscritos = totalInscritos;
-            DuracaoEmMeses = duracaoEmMeses;
-            ValorMensal = valorMensal;
-        }
+﻿using Escola.Dominio.Shared;
 
-        public string Id { get; }
+namespace Escola.Dominio.Turmas
+{
+    public sealed class Turma : Entity
+    {
         public string Descricao { get; }
         public int LimiteIdade { get; }
         public int LimiteAlunos { get; }
