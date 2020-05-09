@@ -1,8 +1,10 @@
-﻿namespace Escola.Dominio.Alunos
+﻿using System.Threading.Tasks;
+
+namespace Escola.Dominio.Alunos
 {
     public interface IAlunosRepositorio
     {
-        Aluno IncluirESalvar(Aluno aluno);
+        Task<Aluno> AdicionarAsync(Aluno aluno);
         //Aluno Atualizar(Aluno aluno);
         //Resultado<Aluno, Falha> RecuperarPorEmail(string email);
         //Resultado<Aluno, Falha> Recuperar(string id);

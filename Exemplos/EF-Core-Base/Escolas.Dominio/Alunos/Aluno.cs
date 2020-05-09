@@ -24,15 +24,16 @@ namespace Escola.Dominio.Alunos
         public ESexo Sexo { get; }
         public int Idade(DateTime quando) => DataNascimento.GetAge(quando);
 
-        public static Result<Aluno> Novo(string nome, string sobreNome, string email, DateTime dataNascimento, ESexo sexo)
+        public static Result<Aluno> Criar(string nome, string sobreNome, string email, DateTime dataNascimento, string sexo)
         {
             var nomeResultado = NomeAluno.Criar(nome, sobreNome);
             var emailResultado = Email.Criar(email);
-            if (Result.Combine(nomeResultado, emailResultado) is var resultado && resultado.IsFailure)
+            var sexoResultado = sexo.ToEnum<ESexo>();
+            if (Result.Combine(nomeResultado, emailResultado, sexoResultado) is var resultado && resultado.IsFailure)
                 return Result.Failure<Aluno>(resultado.Error);
             if(dataNascimento >= DateTime.Now)
                 return Result.Failure<Aluno>("Data de nascimento deve ser menor que hoje");
-            return Result.Ok(new Aluno(0, nomeResultado.Value, emailResultado.Value, dataNascimento, sexo));
+            return Result.Ok(new Aluno(0, nomeResultado.Value, emailResultado.Value, dataNascimento, sexoResultado.Value));
         }
     }
 }
