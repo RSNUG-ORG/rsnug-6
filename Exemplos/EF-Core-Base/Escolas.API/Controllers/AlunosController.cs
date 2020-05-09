@@ -1,4 +1,5 @@
 ﻿using Escola.Dominio.Alunos;
+using Escola.Infra.EF;
 using Escolas.API.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,13 +17,16 @@ namespace Escolas.API.Controllers
     {
         private readonly ILogger<AlunosController> _logger;
         private readonly IAlunosRepositorio _alunosRepositorio;
+        private readonly EscolaContextoEF _unitOfWork;
 
         public AlunosController(
             ILogger<AlunosController> logger,
-            IAlunosRepositorio alunosRepositorio)
+            IAlunosRepositorio alunosRepositorio,
+            EscolaContextoEF unitOfWork)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this._alunosRepositorio = alunosRepositorio;
+            _alunosRepositorio = alunosRepositorio;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
@@ -51,10 +55,13 @@ namespace Escolas.API.Controllers
                 novoAlunoRequest.Sexo);
             if (aluno.IsFailure)
                 return BadRequest(aluno.Error);
+
+            if(await _alunosRepositorio.RecuperarPorEmailAsync(aluno.Value.Email) is var alunoExistente && alunoExistente.HasValue )
+                return BadRequest("Já existe um aluno cadastrado com este e-mail");
+
             await _alunosRepositorio.AdicionarAsync(aluno.Value);
-            
-            //TODO: Criar UnitofWork para salvar alteracoes
-            
+            await _unitOfWork.CommitAsync();
+
             return CreatedAtAction(nameof(AlunoPorId), new { id = aluno.Value.Id }, null);
         }
     }
