@@ -18,9 +18,9 @@ namespace Escola.Dominio.Alunos
             Sexo = sexo;
         }
 
-        public NomeAluno Nome { get; }
+        public NomeAluno Nome { get; private set; }
         public Email Email { get;  }        
-        public DateTime DataNascimento { get; }
+        public DateTime DataNascimento { get; private set; }
         public ESexo Sexo { get; }
         public int Idade(DateTime quando) => DataNascimento.GetAge(quando);
 
@@ -34,6 +34,23 @@ namespace Escola.Dominio.Alunos
             if(dataNascimento >= DateTime.Now)
                 return Result.Failure<Aluno>("Data de nascimento deve ser menor que hoje");
             return Result.Ok(new Aluno(0, nomeResultado.Value, emailResultado.Value, dataNascimento, sexoResultado.Value));
+        }
+
+        public Result AtualizarNome(string primeiroNome, string sobrenome)
+        {
+            var nomeResultado = NomeAluno.Criar(primeiroNome, sobrenome);
+            if (nomeResultado.IsFailure)
+                return Result.Failure(nomeResultado.Error);
+            Nome = nomeResultado.Value;
+            return Result.Ok();
+        }
+
+        public Result AtualizarDataNascimento(DateTime dataNascimento)
+        {
+            if (dataNascimento.Date >= DateTime.Now.Date)
+                return Result.Failure("Data de nascimento dever ser menor que hoje");
+            DataNascimento = dataNascimento;
+            return Result.Ok();
         }
     }
 }

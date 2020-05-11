@@ -1,4 +1,5 @@
-﻿using Escola.Dominio.Alunos;
+﻿using CSharpFunctionalExtensions;
+using Escola.Dominio.Alunos;
 using Escola.Infra.EF;
 using Escolas.API.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -50,7 +51,7 @@ namespace Escolas.API.Controllers
 
         [Route("")]
         [HttpPost]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult> CriarAsync([FromBody]NovoAlunoInputModel novoAlunoRequest)
         {
@@ -70,6 +71,29 @@ namespace Escolas.API.Controllers
             await _unitOfWork.CommitAsync();
 
             return CreatedAtAction(nameof(AlunoPorId), new { id = aluno.Value.Id }, null);
+        }
+
+        [Route("{id:int}")]
+        [HttpPut]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<ActionResult> AtualizarAsync(
+            [FromBody]EditarAlunoInputModel alunoEditadoInputModel,
+            int id)
+        {
+            if (await _alunosRepositorio.RecuperarAsync(id) is var aluno && aluno.HasNoValue)
+                return NotFound();
+
+            var resultadoNome = aluno.Value.AtualizarNome(alunoEditadoInputModel.PrimeiroNome, alunoEditadoInputModel.Sobrenome);
+            var resultadoNascimento = aluno.Value.AtualizarDataNascimento(alunoEditadoInputModel.DataNascimento);
+
+            if (Result.Combine(resultadoNome, resultadoNascimento) is var resultado && resultado.IsFailure)
+                return BadRequest(resultado.Error);
+
+            await _unitOfWork.CommitAsync();
+
+            return Ok();
         }
     }
 }
