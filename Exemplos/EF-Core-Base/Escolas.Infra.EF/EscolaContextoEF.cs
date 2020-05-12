@@ -1,11 +1,12 @@
 ﻿using Escola.Dominio.Alunos;
 using Escola.Infra.EF.EntityConfigurations;
-using Escolas.Dominio.Shared;
+using Escola.Dominio.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Escola.Dominio.Turmas;
 
 namespace Escola.Infra.EF
 {
@@ -14,6 +15,7 @@ namespace Escola.Infra.EF
         public const string DEFAULT_SCHEMA = "Matriculas";
 
         public DbSet<Aluno> Alunos { get; set; }
+        public DbSet<TurmaBase> Turmas { get; set; }
 
         public EscolaContextoEF(DbContextOptions<EscolaContextoEF> options) : base(options)
         {
@@ -23,6 +25,9 @@ namespace Escola.Infra.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new AlunoEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new TurmaEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new TurmaComDuracaoEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new TurmaComDuracaoIlimitadaEntityTypeConfiguration());
         }
 
         public async Task CommitAsync(CancellationToken cancellationToken = default)

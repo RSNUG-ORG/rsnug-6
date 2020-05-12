@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Escolas.Infra.EF.Migrations
+namespace Escola.Infra.EF.Migrations
 {
     public partial class versao_inicial_alunos : Migration
     {

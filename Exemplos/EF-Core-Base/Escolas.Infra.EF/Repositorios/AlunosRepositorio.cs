@@ -2,7 +2,7 @@
 using Escola.Dominio.Alunos;
 using Escola.Dominio.Shared;
 using Escola.Infra.EF;
-using Escolas.Dominio.Shared;
+using Escola.Dominio.Shared;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Escolas.Infra.EF.Repositorios
+namespace Escola.Infra.EF.Repositorios
 {
     public sealed class AlunosRepositorio : IAlunosRepositorio
     {

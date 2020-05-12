@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Escolas.API.ViewModel
+namespace Escola.API.ViewModel
 {
     public class NovoAlunoInputModel
     {

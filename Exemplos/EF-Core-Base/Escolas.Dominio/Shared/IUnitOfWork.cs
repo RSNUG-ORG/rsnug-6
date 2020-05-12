@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Escolas.Dominio.Shared
+namespace Escola.Dominio.Shared
 {
     public interface IUnitOfWork : IDisposable
     {

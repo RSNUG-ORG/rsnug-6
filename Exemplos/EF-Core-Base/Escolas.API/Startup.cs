@@ -2,7 +2,7 @@ using System;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Escola.API.HostingExtensions;
-using Escolas.API.Infraestrutura.AutofacModules;
+using Escola.API.Infraestrutura.AutofacModules;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;

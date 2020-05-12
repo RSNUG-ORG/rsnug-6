@@ -7,11 +7,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{3C82
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{745CC455-2607-4328-B290-20AEA24BF9CF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Escolas.Dominio", "Escolas.Dominio\Escolas.Dominio.csproj", "{C346716D-4692-49A4-90CE-3646F20EC457}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Escola.Dominio", "Escolas.Dominio\Escola.Dominio.csproj", "{C346716D-4692-49A4-90CE-3646F20EC457}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Escolas.Infra.EF", "Escolas.Infra.EF\Escolas.Infra.EF.csproj", "{6438294F-F58B-469C-86B9-05F541C36ED8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Escola.Infra.EF", "Escolas.Infra.EF\Escola.Infra.EF.csproj", "{6438294F-F58B-469C-86B9-05F541C36ED8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Escolas.API", "Escolas.API\Escolas.API.csproj", "{E0018DAE-20C0-4FBB-93D7-6D6336E02EA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Escola.API", "Escolas.API\Escola.API.csproj", "{E0018DAE-20C0-4FBB-93D7-6D6336E02EA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

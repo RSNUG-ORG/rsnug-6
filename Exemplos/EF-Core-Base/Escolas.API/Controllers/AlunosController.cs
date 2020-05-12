@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Escola.Dominio.Alunos;
 using Escola.Infra.EF;
-using Escolas.API.ViewModel;
+using Escola.API.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Escolas.API.Controllers
+namespace Escola.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]

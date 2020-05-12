@@ -1,29 +1,65 @@
-﻿using Escola.Dominio.Shared;
+﻿using CSharpFunctionalExtensions;
+using Escola.Dominio.Shared;
 
 namespace Escola.Dominio.Turmas
 {
-    public sealed class Turma : Entity
+    public abstract class TurmaBase : Entity
     {
-        public string Descricao { get; }
-        public int LimiteIdade { get; }
-        public int LimiteAlunos { get; }
-        public int TotalInscritos { get; private set; }
-        public int DuracaoEmMeses { get; }
-        public decimal ValorMensal { get; }
-        public int VagasDisponiveis => LimiteAlunos - TotalInscritos;
-
-        public void IncrementarInscricao()
+        protected TurmaBase() { }
+        protected TurmaBase(long id, Descricao descricao, ConfiguracaoInscricao configuracao, Quantidade totalInscritos)
+            : base(id)
         {
-            TotalInscritos++;
+            Descricao = descricao;
+            Configuracao = configuracao;
+            TotalInscritos = totalInscritos;
         }
 
-        //public static Resultado<Turma, Falha> Nova(string descricao, int limiteIdade, int limiteAlunos, decimal valorMensal)
-        //{
-        //    if (String.IsNullOrEmpty(descricao) || (descricao.Length <= 5 && descricao.Length > 100))
-        //        return Falha.Nova(400, "Descrição deve ter 5 a 100 letras");
-        //    if(limiteAlunos <=0 || limiteAlunos > 100)
-        //        return Falha.Nova(400, "Limite de alunos deve ser entre 1 e 99");
-        //    return new Turma(Guid.NewGuid().ToString(), descricao, limiteIdade, limiteAlunos, 0, 12, valorMensal);
-        //}
+        public Descricao Descricao { get; }
+        public ConfiguracaoInscricao Configuracao { get; }
+        public Quantidade TotalInscritos { get; private set; }
+        public Result<Quantidade> VagasDisponiveis => Quantidade.Criar(Configuracao.QuantidadeAlunos.Maximo - TotalInscritos);
+
+        public void IncrementarInscricoes()
+            => TotalInscritos++;
+    }
+
+
+    public sealed class TurmaComDuracao : TurmaBase
+    {
+        private TurmaComDuracao() : base() { } 
+        private TurmaComDuracao(long id, Descricao descricao, ConfiguracaoInscricao configuracao, Quantidade totalInscritos, DuracaoTurma duracao)
+            : base(id, descricao, configuracao, totalInscritos)
+        {
+            Duracao = duracao;
+        }
+
+        public DuracaoTurma Duracao { get; }
+
+        public static Result<TurmaComDuracao> Criar(string descricao, int limiteIdade, int quantidadeMinimaAlunos, int quantidadeMaximaAlunos, EDuracaoEm tipoDuracao, int duracao)
+        {
+            var descricaoResultado = Descricao.Criar(descricao);
+            var configuracaoResultado = ConfiguracaoInscricao.Criar(limiteIdade, quantidadeMinimaAlunos, quantidadeMaximaAlunos);
+            var duracaoResultado = DuracaoTurma.Criar(tipoDuracao, duracao);
+            if (Result.Combine(descricaoResultado, configuracaoResultado, duracaoResultado) is var resultado && resultado.IsFailure)
+                return Result.Failure<TurmaComDuracao>(resultado.Error);
+            return Result.Ok(new TurmaComDuracao(0, descricaoResultado.Value, configuracaoResultado.Value, Quantidade.Criar(0).Value, duracaoResultado.Value));
+        }
+    }
+
+    public sealed class TurmaComDuracaoIlimitada : TurmaBase
+    {
+        private TurmaComDuracaoIlimitada() : base() { }
+        private TurmaComDuracaoIlimitada(long id, Descricao descricao, ConfiguracaoInscricao configuracao, Quantidade totalInscritos)
+            : base(id, descricao, configuracao, totalInscritos)
+        { }
+
+        public static Result<TurmaComDuracaoIlimitada> Criar(string descricao, int limiteIdade, int quantidadeMinimaAlunos, int quantidadeMaximaAlunos)
+        {
+            var descricaoResultado = Descricao.Criar(descricao);
+            var configuracaoResultado = ConfiguracaoInscricao.Criar(limiteIdade, quantidadeMinimaAlunos, quantidadeMaximaAlunos);            
+            if (Result.Combine(descricaoResultado, configuracaoResultado) is var resultado && resultado.IsFailure)
+                return Result.Failure<TurmaComDuracaoIlimitada>(resultado.Error);
+            return Result.Ok(new TurmaComDuracaoIlimitada(0, descricaoResultado.Value, configuracaoResultado.Value, Quantidade.Criar(0).Value));
+        }
     }
 }

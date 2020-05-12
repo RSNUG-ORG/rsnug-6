@@ -1,8 +1,11 @@
-﻿namespace Escola.Dominio.Turmas
+﻿using CSharpFunctionalExtensions;
+using System.Threading.Tasks;
+
+namespace Escola.Dominio.Turmas
 {
     public interface ITurmasRepositorio
     {
-        Turma AdicionarESalvar(Turma turma);
-        Turma Recuperar(string id);
+        Task<TurmaBase> AdicionarAsync(TurmaBase turma);
+        Task<Maybe<TurmaBase>> RecuperarAsync(long id);
     }
 }

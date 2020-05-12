@@ -8,16 +8,11 @@ namespace Escola.Dominio.Alunos
    
         public sealed class Inscricao
         {
-            internal Inscricao(string id, string alunoId, Turma turma, DateTime inscritoEm)
-            {
-                Id = id;
-                Turma = turma;
-                InscritoEm = inscritoEm;
-            }
+           
 
             public string Id { get; }
             public string AlunoId { get; }
-            public Turma Turma { get; }
+            //public Turma Turma { get; }
             public DateTime InscritoEm { get; }
 
             //internal static Resultado<Inscricao, Falha> Nova(string alunoId, Turma turma)

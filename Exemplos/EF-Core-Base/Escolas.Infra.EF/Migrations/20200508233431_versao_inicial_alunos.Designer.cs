@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Escolas.Infra.EF.Migrations
+namespace Escola.Infra.EF.Migrations
 {
     [DbContext(typeof(EscolaContextoEF))]
     [Migration("20200508233431_versao_inicial_alunos")]

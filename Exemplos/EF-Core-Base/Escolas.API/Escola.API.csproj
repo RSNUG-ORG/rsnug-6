@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Escolas.Infra.EF\Escolas.Infra.EF.csproj" />
+    <ProjectReference Include="..\Escolas.Infra.EF\Escola.Infra.EF.csproj" />
   </ItemGroup>
 
 </Project>

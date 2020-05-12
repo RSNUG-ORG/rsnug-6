@@ -4,14 +4,16 @@ using Escola.Infra.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Escola.Infra.EF.Migrations
 {
     [DbContext(typeof(EscolaContextoEF))]
-    partial class EscolaContextoEFModelSnapshot : ModelSnapshot
+    [Migration("20200512122043_turma_versao_inicial")]
+    partial class turma_versao_inicial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,8 +1,8 @@
 ﻿using Autofac;
 using Escola.Dominio.Alunos;
-using Escolas.Infra.EF.Repositorios;
+using Escola.Infra.EF.Repositorios;
 
-namespace Escolas.API.Infraestrutura.AutofacModules
+namespace Escola.API.Infraestrutura.AutofacModules
 {
     public sealed class AplicacaoModule : Autofac.Module
     {
