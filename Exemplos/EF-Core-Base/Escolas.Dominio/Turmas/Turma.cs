@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Escola.Dominio.Shared;
+using System;
 
 namespace Escola.Dominio.Turmas
 {
@@ -21,6 +22,22 @@ namespace Escola.Dominio.Turmas
 
         public void IncrementarInscricoes()
             => TotalInscritos++;
+
+        public static Result<TurmaBase> CriarComDuracao(string descricao, int limiteIdade, int quantidadeMinimaAlunos, int quantidadeMaximaAlunos, string tipoDuracao, int duracao)
+        {
+            if (tipoDuracao.ToEnum<EDuracaoEm>() is var tipo && tipo.IsFailure)
+                return Result.Failure<TurmaBase>(tipo.Error);
+            if(TurmaComDuracao.Criar(descricao, limiteIdade, quantidadeMinimaAlunos, quantidadeMaximaAlunos, tipo.Value, duracao) is var turma && turma.IsFailure)
+                return Result.Failure<TurmaBase>(turma.Error);
+            return Result.Ok(turma.Value as TurmaBase);
+        }
+
+        public static Result<TurmaBase> CriarComDuracaoIlimitada(string descricao, int limiteIdade, int quantidadeMinimaAlunos, int quantidadeMaximaAlunos)
+        {
+            if (TurmaComDuracaoIlimitada.Criar(descricao, limiteIdade, quantidadeMinimaAlunos, quantidadeMaximaAlunos) is var turma && turma.IsFailure)
+                return Result.Failure<TurmaBase>(turma.Error);
+            return Result.Ok(turma.Value as TurmaBase);
+        }
     }
 
 

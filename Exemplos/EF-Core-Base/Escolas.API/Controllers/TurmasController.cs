@@ -46,29 +46,36 @@ namespace Escola.API.Controllers
             return Ok(new TurmaViewModel());
         }
 
-        //[Route("")]
-        //[HttpPost]
-        //[ProducesResponseType((int)HttpStatusCode.Created)]
-        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //public async Task<ActionResult> CriarAsync([FromBody]NovoAlunoInputModel novoAlunoRequest)
-        //{
-        //    var aluno = Aluno.Criar(
-        //        novoAlunoRequest.PrimeiroNome, 
-        //        novoAlunoRequest.Sobrenome, 
-        //        novoAlunoRequest.Email, 
-        //        novoAlunoRequest.DataNascimento,
-        //        novoAlunoRequest.Sexo);
-        //    if (aluno.IsFailure)
-        //        return BadRequest(aluno.Error);
+        [Route("")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> CriarAsync([FromBody]NovaTurmaInputModel novaTurmaInputModel)
+        {
+            Result<TurmaBase> turma;
+            if (novaTurmaInputModel.ComDuracao)
+                turma = TurmaBase.CriarComDuracao(
+                            novaTurmaInputModel.Descricao,
+                            novaTurmaInputModel.LimiteIdade,
+                            novaTurmaInputModel.QuantidadeMinimaAlunos,
+                            novaTurmaInputModel.QuantidadeMaximaAlunos,
+                            novaTurmaInputModel.DuracaoTipo,
+                            novaTurmaInputModel.DuracaoValor);
+            else
+                turma = TurmaBase.CriarComDuracaoIlimitada(
+                            novaTurmaInputModel.Descricao,
+                            novaTurmaInputModel.LimiteIdade,
+                            novaTurmaInputModel.QuantidadeMinimaAlunos,
+                            novaTurmaInputModel.QuantidadeMaximaAlunos);
 
-        //    if(await _turmasRepositorio.RecuperarPorEmailAsync(aluno.Value.Email) is var alunoExistente && alunoExistente.HasValue )
-        //        return BadRequest("Já existe um aluno cadastrado com este e-mail");
+            if (turma.IsFailure)
+                return BadRequest(turma.Error);
 
-        //    await _turmasRepositorio.AdicionarAsync(aluno.Value);
-        //    await _unitOfWork.CommitAsync();
+            await _turmasRepositorio.AdicionarAsync(turma.Value);
+            await _unitOfWork.CommitAsync();
 
-        //    return CreatedAtAction(nameof(AlunoPorId), new { id = aluno.Value.Id }, null);
-        //}
+            return CreatedAtAction(nameof(TurmaPorId), new { id = turma.Value.Id }, null);
+        }
 
         //[Route("{id:int}")]
         //[HttpPut]

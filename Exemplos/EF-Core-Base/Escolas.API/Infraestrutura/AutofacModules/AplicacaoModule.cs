@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Escola.Dominio.Alunos;
+using Escola.Dominio.Turmas;
 using Escola.Infra.EF.Repositorios;
 
 namespace Escola.API.Infraestrutura.AutofacModules
@@ -10,6 +11,9 @@ namespace Escola.API.Infraestrutura.AutofacModules
         {
             builder.RegisterType<AlunosRepositorio>()
                 .As<IAlunosRepositorio>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<TurmasRepositorio>()
+                .As<ITurmasRepositorio>()
                 .InstancePerLifetimeScope();
 
             //builder.RegisterAssemblyTypes(typeof(CreateOrderCommandHandler).GetTypeInfo().Assembly)
