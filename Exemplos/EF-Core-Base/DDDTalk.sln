@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Escola.Infra.EF", "Escolas.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Escola.API", "Escolas.API\Escola.API.csproj", "{E0018DAE-20C0-4FBB-93D7-6D6336E02EA6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Escolas.Infra.Dapper", "Escolas.Infra.Dapper\Escolas.Infra.Dapper.csproj", "{0FBEDE81-75BC-42BA-9E22-F0E4A4A6D5CD}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentos", "Documentos", "{969047D7-BD58-47B8-BB9E-A0D55922156D}"
 	ProjectSection(SolutionItems) = preProject
 		Dicas.txt = Dicas.txt
