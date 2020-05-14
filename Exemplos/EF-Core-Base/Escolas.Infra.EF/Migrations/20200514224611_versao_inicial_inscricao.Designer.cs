@@ -4,14 +4,16 @@ using Escola.Infra.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Escola.Infra.EF.Migrations
 {
     [DbContext(typeof(EscolaContextoEF))]
-    partial class EscolaContextoEFModelSnapshot : ModelSnapshot
+    [Migration("20200514224611_versao_inicial_inscricao")]
+    partial class versao_inicial_inscricao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,9 +56,6 @@ namespace Escola.Infra.EF.Migrations
                         .HasAnnotation("SqlServer:HiLoSequenceName", "inscricaoseq")
                         .HasAnnotation("SqlServer:HiLoSequenceSchema", "Matriculas")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
-
-                    b.Property<DateTime>("EncerraEm")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("InscritoEm")
                         .HasColumnType("datetime2");

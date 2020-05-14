@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Escola.Dominio.Alunos;
 using Escola.Dominio.Shared;
 using System;
 
@@ -22,6 +23,17 @@ namespace Escola.Dominio.Turmas
 
         public void IncrementarInscricoes()
             => TotalInscritos++;
+
+        internal Result PossoFazerInscrever(Aluno aluno, DateTime inscricaoEm)
+        {
+            if(VagasDisponiveis.IsFailure)            
+                return Result.Failure("Quantidade máxima de alunos ultrapassada");
+            if(aluno.Idade(DateTime.UtcNow) > Configuracao.LimiteIdade)
+                return Result.Failure("Aluno não possui idade para a turma desejada");
+            return Result.Ok();
+        }
+
+        internal abstract DateTime RecuperarDataEncerramento(DateTime dataInicio);
 
         public static Result<TurmaBase> CriarComDuracao(string descricao, int limiteIdade, int quantidadeMinimaAlunos, int quantidadeMaximaAlunos, string tipoDuracao, int duracao)
         {
@@ -52,6 +64,14 @@ namespace Escola.Dominio.Turmas
 
         public DuracaoTurma Duracao { get; }
 
+        internal override DateTime RecuperarDataEncerramento(DateTime dataInicio)
+            => Duracao.Tipo switch
+            {
+                EDuracaoEm.Anos => dataInicio.AddYears(Duracao.Quantidade),
+                EDuracaoEm.Meses => dataInicio.AddMonths(Duracao.Quantidade),
+                _ => dataInicio.AddDays(Duracao.Quantidade)
+            };
+
         public static Result<TurmaComDuracao> Criar(string descricao, int limiteIdade, int quantidadeMinimaAlunos, int quantidadeMaximaAlunos, EDuracaoEm tipoDuracao, int duracao)
         {
             var descricaoResultado = Descricao.Criar(descricao);
@@ -69,6 +89,9 @@ namespace Escola.Dominio.Turmas
         private TurmaComDuracaoIlimitada(long id, Descricao descricao, ConfiguracaoInscricao configuracao, Quantidade totalInscritos)
             : base(id, descricao, configuracao, totalInscritos)
         { }
+
+        internal override DateTime RecuperarDataEncerramento(DateTime dataInicio)
+            => DateTime.MaxValue;
 
         public static Result<TurmaComDuracaoIlimitada> Criar(string descricao, int limiteIdade, int quantidadeMinimaAlunos, int quantidadeMaximaAlunos)
         {

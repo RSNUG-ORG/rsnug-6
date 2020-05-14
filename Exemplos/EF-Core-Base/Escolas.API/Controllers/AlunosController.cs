@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Escola.Dominio.Turmas;
 
 namespace Escola.API.Controllers
 {
@@ -89,6 +90,30 @@ namespace Escola.API.Controllers
             var resultadoNascimento = aluno.Value.AtualizarDataNascimento(alunoEditadoInputModel.DataNascimento);
 
             if (Result.Combine(resultadoNome, resultadoNascimento) is var resultado && resultado.IsFailure)
+                return BadRequest(resultado.Error);
+
+            await _unitOfWork.CommitAsync();
+
+            return Ok();
+        }
+
+        [Route("{id:int}/Inscricoes")]
+        [HttpPut]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<ActionResult> AdicionarInscricaoAsync(
+            [FromServices]ITurmasRepositorio _turmasRepositorio,
+            [FromBody]NovaInscricaoInputModel novaInscricaoInputModel,
+            int id)
+        {
+            if (await _alunosRepositorio.RecuperarAsync(id) is var aluno && aluno.HasNoValue)
+                return NotFound();
+
+            if (await _turmasRepositorio.RecuperarAsync(novaInscricaoInputModel.TurmaId) is var turma && turma.HasNoValue)
+                return BadRequest("Turma inválida");
+
+            if(aluno.Value.RealizarInscricao(turma.Value, DateTime.UtcNow) is var resultado && resultado.IsFailure)
                 return BadRequest(resultado.Error);
 
             await _unitOfWork.CommitAsync();

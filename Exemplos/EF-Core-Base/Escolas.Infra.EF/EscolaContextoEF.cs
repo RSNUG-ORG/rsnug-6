@@ -28,6 +28,7 @@ namespace Escola.Infra.EF
             modelBuilder.ApplyConfiguration(new TurmaEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new TurmaComDuracaoEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new TurmaComDuracaoIlimitadaEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new InscricaoEntityTypeConfiguration());
         }
 
         public async Task CommitAsync(CancellationToken cancellationToken = default)

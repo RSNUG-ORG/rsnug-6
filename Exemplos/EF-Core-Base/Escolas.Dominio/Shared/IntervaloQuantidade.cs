@@ -18,7 +18,7 @@ namespace Escola.Dominio.Shared
         {
             var minimaResultado = Quantidade.Criar(minima);
             var maximaResultado = Quantidade.Criar(maxima);
-            var intervaloResultado = Result.FailureIf(() => maxima > minima, "Quantidade mínima deve ser menor que máxima");
+            var intervaloResultado = Result.FailureIf(() => minima > maxima, "Quantidade mínima deve ser menor que máxima");
             var resultado = Result.Combine(minimaResultado, maximaResultado, intervaloResultado);
             if (resultado.IsFailure)
                 return Result.Failure<IntervaloQuantidade>(resultado.Error);

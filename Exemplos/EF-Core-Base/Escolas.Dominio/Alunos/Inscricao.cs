@@ -1,27 +1,34 @@
-﻿using Escola.Dominio.Turmas;
+﻿using Escola.Dominio.Shared;
 using System;
-using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("DDDTalk.Dominio.Infra.SqlServer.Dapper")]
 namespace Escola.Dominio.Alunos
 {
-   
-        public sealed class Inscricao
+    public sealed class Inscricao : Entity
+    {
+        private Inscricao() : base() { }
+        private Inscricao(long id, long turmaId, DateTime inscritoEm, DateTime encerraEm, ESituacao situacao)
+            : base(id)
         {
-           
-
-            public string Id { get; }
-            public string AlunoId { get; }
-            //public Turma Turma { get; }
-            public DateTime InscritoEm { get; }
-
-            //internal static Resultado<Inscricao, Falha> Nova(string alunoId, Turma turma)
-            //{
-            //    if (turma.VagasDisponiveis <= 0)
-            //        return Falha.Nova(400, "Sem vagas disponiveis");
-            //    turma.IncrementarInscricao();
-            //    return new Inscricao(Guid.NewGuid().ToString(), alunoId, turma, DateTime.Now);
-            //}
+            TurmaId = turmaId;
+            InscritoEm = inscritoEm;
+            EncerraEm = encerraEm;
+            Situacao = situacao;
         }
-   
+
+        public long TurmaId { get; }
+        public DateTime InscritoEm { get; }
+        public DateTime EncerraEm { get; }
+        public ESituacao Situacao { get; }
+
+        public enum ESituacao
+        {
+            Confirmada,
+            Encerrada
+        }
+
+        internal static Inscricao Criar(long turmaId, DateTime encerraEm)
+            => new Inscricao(0, turmaId, DateTime.UtcNow, encerraEm, ESituacao.Confirmada);
+        
+    }
+
 }

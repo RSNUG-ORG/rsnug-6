@@ -27,6 +27,14 @@ namespace Escola.Infra.EF.EntityConfigurations
             builder.Property(p => p.Sexo)
                 .HasColumnType("varchar(15)")
                 .HasConversion(new EnumToStringConverter<ESexo>());
+            builder
+                .HasMany(c => c.Inscricoes)
+                .WithOne()
+                .HasForeignKey("PessoaId")
+                .OnDelete(DeleteBehavior.Cascade)
+                .Metadata
+                .PrincipalToDependent
+                .SetField("_inscricoes");
         }
     }
 }
