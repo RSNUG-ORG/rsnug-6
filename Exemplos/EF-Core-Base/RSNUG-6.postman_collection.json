@@ -1,0 +1,140 @@
+{
+	"info": {
+		"_postman_id": "ca4a866f-0b45-43f2-abd8-04946b33e010",
+		"name": "RSNUG-6",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Alunos",
+			"item": [
+				{
+					"name": "Criar Aluno",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"PrimeiroNome\": \"Gabriel\",\n\t\"Sobrenome\" : \"Kohlrausch\",\n\t\"Email\" : \"gabriel@superTeste.com.br\",\n\t\"DataNascimento\" : \"1983-06-27T00:00:00\",\n\t\"Sexo\": \"Masculino\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/Alunos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"Alunos"
+							]
+						},
+						"description": "Criar novo aluno"
+					},
+					"response": []
+				},
+				{
+					"name": "Realizar inscricao",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"TurmaId\": 11\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/Alunos/1/Inscricoes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"Alunos",
+								"1",
+								"Inscricoes"
+							]
+						},
+						"description": "Criar novo aluno"
+					},
+					"response": []
+				},
+				{
+					"name": "Recuperar Aluno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/alunos/11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"alunos",
+								"11"
+							]
+						},
+						"description": "Recuprar dados de aluno"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Turmas",
+			"item": [
+				{
+					"name": "Criar Turma",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Descricao\" : \"Turma de futebol\",\n\t\"LimiteIdade\" : 0,\n\t\"QuantidadeMinimaAlunos\" : 0,\n\t\"QuantidadeMaximaAlunos\" : 0,\n\t\"ComDuracao\" : true,\n\t\"DuracaoTipo\" : \"Dias\",\n\t\"DuracaoValor\" : 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/Turmas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"Turmas"
+							]
+						},
+						"description": "Criar turma"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
