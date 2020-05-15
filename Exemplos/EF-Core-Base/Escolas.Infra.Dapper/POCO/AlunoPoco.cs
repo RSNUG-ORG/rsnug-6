@@ -1,5 +1,7 @@
 ﻿using Escola.Dominio.Alunos;
 using System;
+using System.Collections.Generic;
+using static Escola.Dominio.Alunos.Inscricao;
 
 namespace Escolas.Infra.Dapper.POCO
 {
@@ -11,6 +13,8 @@ namespace Escolas.Infra.Dapper.POCO
         public string Email { get; set; }
         public DateTime DataNascimento { get; set; }
         public string Sexo { get; set; }
+
+        public List<InscricaoPoco> Inscricoes { get; set; }
 
         public AlunoPoco(int id, string nome, string sobrenome, string email, DateTime dataNascimento, string sexo)
         {
@@ -25,7 +29,17 @@ namespace Escolas.Infra.Dapper.POCO
         public Aluno BuildAluno()
         {
             Aluno aluno = Aluno.Criar(Nome, Sobrenome, Email, DataNascimento, Sexo).Value;
-            return aluno.DefinirId(Id);
+            aluno = aluno.DefinirId(Id);
+
+            List<Inscricao> inscricoes = new List<Inscricao>();
+            foreach (var inscricaoRecovered in Inscricoes)
+            {
+                Inscricao inscricao = RecuperarInscricao(inscricaoRecovered.Id, inscricaoRecovered.TurmaId, inscricaoRecovered.InscritoEm, inscricaoRecovered.EncerraEm, (ESituacao)Enum.Parse(typeof(ESituacao), inscricaoRecovered.Situacao));
+                inscricoes.Add(inscricao);
+            }
+
+            aluno.RecuperarMinhasInscricoes(inscricoes);
+            return aluno;
         }
     }
 }

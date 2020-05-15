@@ -72,6 +72,11 @@ namespace Escola.Dominio.Alunos
 
         #region Dapper Methods
         public Aluno DefinirId(long id) => new Aluno(id, Nome, Email, DataNascimento, Sexo, null);
+        public Result RecuperarMinhasInscricoes(IEnumerable<Inscricao> inscricoes)
+        {
+            _inscricoes.AddRange(inscricoes);
+            return Result.Ok();
+        }
         #endregion
     }
 }
