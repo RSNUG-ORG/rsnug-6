@@ -2,3 +2,5 @@ https://www.entityframeworktutorial.net/efcore/working-with-stored-procedure-in-
 https://github.com/dotnet/efcore/issues/18299
 https://docs.microsoft.com/pt-br/ef/core/modeling/concurrency?tabs=fluent-api
 https://docs.microsoft.com/pt-br/ef/core/saving/concurrency
+https://docs.microsoft.com/en-us/archive/msdn-magazine/2019/november/data-points-backing-field-and-owned-entity-changes-in-ef-core-3-0
+https://github.com/dotnet/efcore/issues/19789

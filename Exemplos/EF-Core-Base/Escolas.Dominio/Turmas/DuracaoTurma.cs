@@ -6,7 +6,6 @@ namespace Escola.Dominio.Turmas
 {
     public sealed class DuracaoTurma: ValueObject
     {
-        
         private DuracaoTurma(EDuracaoEm tipo, Quantidade quantidade)
         {
             Tipo = tipo;

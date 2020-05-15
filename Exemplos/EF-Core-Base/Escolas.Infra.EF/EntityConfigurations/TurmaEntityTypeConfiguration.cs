@@ -38,11 +38,15 @@ namespace Escola.Infra.EF.EntityConfigurations
                         .HasColumnName("QuantidadeMaximaAlunos")
                         .HasColumnType("int")
                         .HasConversion<int>(p => p, p => Quantidade.Criar(p).Value);
+                     quantidade.Property<byte[]>("RowVersion").HasColumnName("RowVersion").IsRowVersion();
                  });
+                configuracao.Property<byte[]>("RowVersion").HasColumnName("RowVersion").IsRowVersion();
             });
             builder.Property(c => c.TotalInscritos)
                 .HasColumnType("int")
                 .HasConversion<int>(p => p, p => Quantidade.Criar(p).Value);
+            //.IsConcurrencyToken();
+            builder.Property<byte[]>("RowVersion").HasColumnName("RowVersion").IsRowVersion();
         }
     }
 
@@ -64,7 +68,10 @@ namespace Escola.Infra.EF.EntityConfigurations
                     .HasColumnName("DuracaoQuantidade")
                     .HasColumnType("int")
                     .HasConversion<int>(p => p, p => Quantidade.Criar(p).Value);
+
+                duracao.Property<byte[]>("RowVersion").HasColumnName("RowVersion").IsRowVersion();
             });
+
         }
     }
 

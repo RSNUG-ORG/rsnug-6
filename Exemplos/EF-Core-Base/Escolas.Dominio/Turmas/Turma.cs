@@ -21,6 +21,7 @@ namespace Escola.Dominio.Turmas
         public Quantidade TotalInscritos { get; private set; }
         public Result<Quantidade> VagasDisponiveis => Quantidade.Criar(Configuracao.QuantidadeAlunos.Maximo - TotalInscritos);
 
+
         public void IncrementarInscricoes()
             => TotalInscritos++;
 
