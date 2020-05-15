@@ -16,6 +16,7 @@ namespace Escola.Infra.EF.EntityConfigurations
                 .UseHiLo("pessoaseq", EscolaContextoEF.DEFAULT_SCHEMA);
             builder.OwnsOne(p => p.Nome, nome =>
             {
+                nome.WithOwner();
                 nome.Property(n => n.Primeiro).HasColumnName("PrimeiroNome").HasColumnType("varchar(20)");
                 nome.Property(n => n.Sobrenome).HasColumnName("Sobrenome").HasColumnType("varchar(40)");
             });

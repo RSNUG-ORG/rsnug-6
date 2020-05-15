@@ -7,6 +7,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Escola.Dominio.Turmas;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Escola.Infra.EF
 {
@@ -16,10 +18,23 @@ namespace Escola.Infra.EF
 
         public DbSet<Aluno> Alunos { get; set; }
         public DbSet<TurmaBase> Turmas { get; set; }
+        public DbSet<TotalInscricoesPorTurma> ViewVericacaoInscricoes { get; set; }
 
         public EscolaContextoEF(DbContextOptions<EscolaContextoEF> options) : base(options)
         {
             System.Diagnostics.Debug.WriteLine("EscolaContextoEF::ctor ->" + this.GetHashCode());
+        }
+
+        public async Task CommitAsync(CancellationToken cancellationToken = default)
+        {
+            await base.SaveChangesAsync(cancellationToken);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+                .UseLoggerFactory(GetLoggerFactory())
+                .EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,11 +44,17 @@ namespace Escola.Infra.EF
             modelBuilder.ApplyConfiguration(new TurmaComDuracaoEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new TurmaComDuracaoIlimitadaEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new InscricaoEntityTypeConfiguration());
+            modelBuilder.Entity<TotalInscricoesPorTurma>(e => e.ToView("VerificarTotalInscricoes", DEFAULT_SCHEMA).HasNoKey());
         }
 
-        public async Task CommitAsync(CancellationToken cancellationToken = default)
+        private ILoggerFactory GetLoggerFactory()
         {
-            await base.SaveChangesAsync(cancellationToken);
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddLogging(builder => builder
+                    .AddConsole()
+                    .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Information));
+            return serviceCollection.BuildServiceProvider()
+                    .GetService<ILoggerFactory>();
         }
     }
 
