@@ -77,27 +77,21 @@ namespace Escola.API.Controllers
             return CreatedAtAction(nameof(TurmaPorId), new { id = turma.Value.Id }, null);
         }
 
-        //[Route("{id:int}")]
-        //[HttpPut]
-        //[ProducesResponseType((int)HttpStatusCode.NotFound)]
-        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //[ProducesResponseType((int)HttpStatusCode.OK)]
-        //public async Task<ActionResult> AtualizarAsync(
-        //    [FromBody]EditarAlunoInputModel alunoEditadoInputModel,
-        //    int id)
-        //{
-        //    if (await _turmasRepositorio.RecuperarAsync(id) is var aluno && aluno.HasNoValue)
-        //        return NotFound();
+        [Route("{id:int}")]
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<ActionResult> ExcluirAsync(int id)
+        {
+            if (await _turmasRepositorio.RecuperarAsync(id) is var turma && turma.HasNoValue)
+                return NotFound();
 
-        //    var resultadoNome = aluno.Value.AtualizarNome(alunoEditadoInputModel.PrimeiroNome, alunoEditadoInputModel.Sobrenome);
-        //    var resultadoNascimento = aluno.Value.AtualizarDataNascimento(alunoEditadoInputModel.DataNascimento);
+            turma.Value.Excluir();
 
-        //    if (Result.Combine(resultadoNome, resultadoNascimento) is var resultado && resultado.IsFailure)
-        //        return BadRequest(resultado.Error);
+            await _unitOfWork.CommitAsync();
 
-        //    await _unitOfWork.CommitAsync();
-
-        //    return Ok();
-        //}
+            return Ok();
+        }
     }
 }

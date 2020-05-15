@@ -8,17 +8,19 @@ namespace Escola.Dominio.Turmas
     public abstract class TurmaBase : Entity
     {
         protected TurmaBase() { }
-        protected TurmaBase(long id, Descricao descricao, ConfiguracaoInscricao configuracao, Quantidade totalInscritos)
+        protected TurmaBase(long id, Descricao descricao, ConfiguracaoInscricao configuracao, Quantidade totalInscritos, bool excluido = false)
             : base(id)
         {
             Descricao = descricao;
             Configuracao = configuracao;
             TotalInscritos = totalInscritos;
+            Excluido = excluido;
         }
 
         public Descricao Descricao { get; }
         public ConfiguracaoInscricao Configuracao { get; }
         public Quantidade TotalInscritos { get; private set; }
+        public bool Excluido { get; private set; }
         public Result<Quantidade> VagasDisponiveis => Quantidade.Criar(Configuracao.QuantidadeAlunos.Maximo - TotalInscritos);
 
 
@@ -35,6 +37,11 @@ namespace Escola.Dominio.Turmas
         }
 
         internal abstract DateTime RecuperarDataEncerramento(DateTime dataInicio);
+
+        public void Excluir()
+        {
+            Excluido = true;
+        }
 
         public static Result<TurmaBase> CriarComDuracao(string descricao, int limiteIdade, int quantidadeMinimaAlunos, int quantidadeMaximaAlunos, string tipoDuracao, int duracao)
         {

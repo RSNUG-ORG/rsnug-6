@@ -3,6 +3,7 @@ using Escola.Dominio.Turmas;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System;
 
 namespace Escola.Infra.EF.EntityConfigurations
 {
@@ -46,7 +47,11 @@ namespace Escola.Infra.EF.EntityConfigurations
                 .HasColumnType("int")
                 .HasConversion<int>(p => p, p => Quantidade.Criar(p).Value);
             //.IsConcurrencyToken();
+            builder.Property(c => c.Excluido);
+            builder.HasQueryFilter(c => !c.Excluido);
             builder.Property<byte[]>("RowVersion").HasColumnName("RowVersion").IsRowVersion();
+            builder.Property<DateTime>("DataUltimaAlteracao").HasColumnType("datetime2");
+            builder.Property<DateTime>("DataCadastro").HasColumnType("datetime2");
         }
     }
 

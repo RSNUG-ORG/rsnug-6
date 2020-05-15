@@ -27,7 +27,10 @@ namespace Escola.Infra.EF.Repositorios
         }
 
         public async Task<Maybe<Aluno>> RecuperarAsync(long id)
-            => await _contexto.Alunos.FirstOrDefaultAsync(c => c.Id == id);
+            => await _contexto
+                        .Alunos
+                        .Include(a=> a.Inscricoes)
+                        .FirstOrDefaultAsync(c => c.Id == id);
 
         public async Task<Maybe<Aluno>> RecuperarPorEmailAsync(Email email)
             => await _contexto.Alunos.FirstOrDefaultAsync(c=> c.Email == email);

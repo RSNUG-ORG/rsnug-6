@@ -42,9 +42,9 @@ namespace Escola.Infra.EF
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder
-                .UseLoggerFactory(GetLoggerFactory())
-                .EnableSensitiveDataLogging();
+            //optionsBuilder
+            //    .UseLoggerFactory(GetLoggerFactory())
+            //    .EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
