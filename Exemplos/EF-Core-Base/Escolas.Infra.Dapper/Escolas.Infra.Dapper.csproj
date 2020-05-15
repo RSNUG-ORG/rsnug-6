@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Queries\AdicionarAluno.sql" />
+    <Compile Include="Queries\Alunos\Adicionar.sql" />
   </ItemGroup>
 
   <ItemGroup>

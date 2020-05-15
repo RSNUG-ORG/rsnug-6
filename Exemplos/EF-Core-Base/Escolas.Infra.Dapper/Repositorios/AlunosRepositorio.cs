@@ -24,25 +24,42 @@ namespace Escolas.Infra.Dapper.Repositorios
         public async Task<Aluno> AdicionarAsync(Aluno aluno)
         {
             string query = QueryReader.GetQuery(_alunoBasePath, "AdicionarAluno");
-            long insertedId = await _connection.ExecuteScalarAsync<long>(query, aluno);
-            return aluno.DefinirId(insertedId);
+
+            using (var tran = _connection.BeginTransaction())
+            {
+                AlunoPoco alunoToInsert = new AlunoPoco(aluno);
+                long insertedId = await _connection.ExecuteScalarAsync<long>(query, alunoToInsert);
+
+                if (insertedId > 0)
+                {
+                    query = QueryReader.GetQuery(_alunoBasePath, "AdicionarInscricoes");
+                    await _connection.ExecuteAsync(query, aluno.Inscricoes);
+                }
+
+                if (insertedId > 0)
+                    tran.Commit();
+                else
+                    tran.Rollback();
+
+                return aluno.DefinirId(insertedId);
+            }
         }
 
         public async void AtualizarAsync(Aluno aluno)
         {
             string query = QueryReader.GetQuery(_alunoBasePath, "AtualizarAluno");
-            await _connection.ExecuteAsync(query, aluno);            
+            await _connection.ExecuteAsync(query, aluno);
         }
 
         public async Task<Maybe<Aluno>> RecuperarAsync(long id)
         {
             string query = QueryReader.GetQuery(_alunoBasePath, "Recuperar");
-            
+
             AlunoPoco aluno;
             using (var alunoQuery = await _connection.QueryMultipleAsync(query, new { id }))
-            {                
+            {
                 aluno = alunoQuery.Read<AlunoPoco>().FirstOrDefault();
-                if(aluno != null)
+                if (aluno != null)
                 {
                     aluno.Inscricoes = alunoQuery.Read<InscricaoPoco>().ToList();
                 }

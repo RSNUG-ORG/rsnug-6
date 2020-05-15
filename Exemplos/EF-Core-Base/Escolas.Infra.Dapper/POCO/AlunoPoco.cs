@@ -6,7 +6,7 @@ using static Escola.Dominio.Alunos.Inscricao;
 namespace Escolas.Infra.Dapper.POCO
 {
     public class AlunoPoco
-    {
+    {     
         public long Id { get; set; }
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
@@ -24,6 +24,16 @@ namespace Escolas.Infra.Dapper.POCO
             Email = email;
             DataNascimento = dataNascimento;
             Sexo = sexo;
+        }
+
+        public AlunoPoco(Aluno aluno)
+        {
+            Id = aluno.Id;
+            Nome = aluno.Nome.Primeiro;
+            Sobrenome = aluno.Nome.Sobrenome;
+            Email = aluno.Email;
+            DataNascimento = aluno.DataNascimento;
+            Sexo = aluno.Sexo.ToString();
         }
 
         public Aluno BuildAluno()
