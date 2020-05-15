@@ -1,0 +1,4 @@
+https://www.entityframeworktutorial.net/efcore/working-with-stored-procedure-in-ef-core.aspx
+https://github.com/dotnet/efcore/issues/18299
+https://docs.microsoft.com/pt-br/ef/core/modeling/concurrency?tabs=fluent-api
+https://docs.microsoft.com/pt-br/ef/core/saving/concurrency

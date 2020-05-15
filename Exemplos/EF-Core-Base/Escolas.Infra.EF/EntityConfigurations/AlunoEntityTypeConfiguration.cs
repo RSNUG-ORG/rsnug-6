@@ -3,6 +3,7 @@ using Escola.Dominio.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System;
 
 namespace Escola.Infra.EF.EntityConfigurations
 {
@@ -36,6 +37,8 @@ namespace Escola.Infra.EF.EntityConfigurations
                 .Metadata
                 .PrincipalToDependent
                 .SetField("_inscricoes");
+            builder.Property<DateTime>("DataUltimaAlteracao").HasColumnType("datetime2");
+            builder.Property<DateTime>("DataCadastro").HasColumnType("datetime2");
         }
     }
 }

@@ -6,6 +6,7 @@ namespace Escola.Dominio.Turmas
 {
     public sealed class TotalInscricoesPorTurma
     {
+        private TotalInscricoesPorTurma() { }
         public TotalInscricoesPorTurma(int id, int totalInscritos, int totalReal)
         {
             Id = id;

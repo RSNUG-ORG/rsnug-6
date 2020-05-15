@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Escola.Dominio.Turmas;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 
 namespace Escola.Infra.EF
 {
@@ -27,6 +28,15 @@ namespace Escola.Infra.EF
 
         public async Task CommitAsync(CancellationToken cancellationToken = default)
         {
+            foreach (var item in this.ChangeTracker.Entries())
+            {
+                if (item.State == Microsoft.EntityFrameworkCore.EntityState.Modified && item.Properties.Any(c => c.Metadata.Name == "DataUltimaAlteracao"))
+                    item.Property("DataUltimaAlteracao").CurrentValue = DateTime.UtcNow;
+
+                if (item.State == Microsoft.EntityFrameworkCore.EntityState.Added && item.Properties.Any(c => c.Metadata.Name == "DataCadastro"))
+                    item.Property("DataCadastro").CurrentValue = DateTime.UtcNow;
+            }
+
             await base.SaveChangesAsync(cancellationToken);
         }
 
