@@ -21,15 +21,14 @@ namespace Escola.Dominio.Turmas
         public Quantidade TotalInscritos { get; private set; }
         public Result<Quantidade> VagasDisponiveis => Quantidade.Criar(Configuracao.QuantidadeAlunos.Maximo - TotalInscritos);
 
-
         public void IncrementarInscricoes()
             => TotalInscritos++;
 
         internal Result PossoFazerInscrever(Aluno aluno, DateTime inscricaoEm)
         {
-            if(VagasDisponiveis.IsFailure)            
+            if (VagasDisponiveis.IsFailure)
                 return Result.Failure("Quantidade máxima de alunos ultrapassada");
-            if(aluno.Idade(DateTime.UtcNow) > Configuracao.LimiteIdade)
+            if (aluno.Idade(DateTime.UtcNow) > Configuracao.LimiteIdade)
                 return Result.Failure("Aluno não possui idade para a turma desejada");
             return Result.Ok();
         }
@@ -40,7 +39,7 @@ namespace Escola.Dominio.Turmas
         {
             if (tipoDuracao.ToEnum<EDuracaoEm>() is var tipo && tipo.IsFailure)
                 return Result.Failure<TurmaBase>(tipo.Error);
-            if(TurmaComDuracao.Criar(descricao, limiteIdade, quantidadeMinimaAlunos, quantidadeMaximaAlunos, tipo.Value, duracao) is var turma && turma.IsFailure)
+            if (TurmaComDuracao.Criar(descricao, limiteIdade, quantidadeMinimaAlunos, quantidadeMaximaAlunos, tipo.Value, duracao) is var turma && turma.IsFailure)
                 return Result.Failure<TurmaBase>(turma.Error);
             return Result.Ok(turma.Value as TurmaBase);
         }
@@ -51,12 +50,16 @@ namespace Escola.Dominio.Turmas
                 return Result.Failure<TurmaBase>(turma.Error);
             return Result.Ok(turma.Value as TurmaBase);
         }
+
+        #region Metodos Dapper
+        public abstract TurmaBase DefinirId(long insertedId);
+        #endregion
     }
 
 
     public sealed class TurmaComDuracao : TurmaBase
     {
-        private TurmaComDuracao() : base() { } 
+        private TurmaComDuracao() : base() { }
         private TurmaComDuracao(long id, Descricao descricao, ConfiguracaoInscricao configuracao, Quantidade totalInscritos, DuracaoTurma duracao)
             : base(id, descricao, configuracao, totalInscritos)
         {
@@ -82,6 +85,9 @@ namespace Escola.Dominio.Turmas
                 return Result.Failure<TurmaComDuracao>(resultado.Error);
             return Result.Ok(new TurmaComDuracao(0, descricaoResultado.Value, configuracaoResultado.Value, Quantidade.Criar(0).Value, duracaoResultado.Value));
         }
+
+        public override TurmaBase DefinirId(long insertedId)
+            => new TurmaComDuracao(insertedId, Descricao, Configuracao, TotalInscritos, Duracao);
     }
 
     public sealed class TurmaComDuracaoIlimitada : TurmaBase
@@ -97,10 +103,12 @@ namespace Escola.Dominio.Turmas
         public static Result<TurmaComDuracaoIlimitada> Criar(string descricao, int limiteIdade, int quantidadeMinimaAlunos, int quantidadeMaximaAlunos)
         {
             var descricaoResultado = Descricao.Criar(descricao);
-            var configuracaoResultado = ConfiguracaoInscricao.Criar(limiteIdade, quantidadeMinimaAlunos, quantidadeMaximaAlunos);            
+            var configuracaoResultado = ConfiguracaoInscricao.Criar(limiteIdade, quantidadeMinimaAlunos, quantidadeMaximaAlunos);
             if (Result.Combine(descricaoResultado, configuracaoResultado) is var resultado && resultado.IsFailure)
                 return Result.Failure<TurmaComDuracaoIlimitada>(resultado.Error);
             return Result.Ok(new TurmaComDuracaoIlimitada(0, descricaoResultado.Value, configuracaoResultado.Value, Quantidade.Criar(0).Value));
         }
+
+        public override TurmaBase DefinirId(long insertedId) => new TurmaComDuracaoIlimitada(insertedId, Descricao, Configuracao, TotalInscritos);
     }
 }

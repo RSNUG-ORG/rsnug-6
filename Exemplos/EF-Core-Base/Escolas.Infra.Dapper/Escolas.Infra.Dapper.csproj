@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Escolas.Dominio\Escola.Dominio.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Queries\Turmas\" />
+  </ItemGroup>
+
 </Project>
