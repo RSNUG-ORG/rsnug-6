@@ -28,7 +28,11 @@ namespace Escola.Dominio.Alunos
 
         internal static Inscricao Criar(long turmaId, DateTime encerraEm)
             => new Inscricao(0, turmaId, DateTime.UtcNow, encerraEm, ESituacao.Confirmada);
-        
+
+        #region Métodos Dapper
+        public static Inscricao RecuperarInscricao(long id, long turmaId, DateTime inscritoEm, DateTime encerraEm, ESituacao situacao)
+            => new Inscricao(id, turmaId, inscritoEm, encerraEm, situacao);
+        #endregion
     }
 
 }

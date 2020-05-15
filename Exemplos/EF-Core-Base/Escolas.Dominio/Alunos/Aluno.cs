@@ -9,7 +9,7 @@ namespace Escola.Dominio.Alunos
 {
     public sealed class Aluno : Entity
     {
-        private Aluno() 
+        private Aluno()
         {
             _inscricoes = new List<Inscricao>();
         }
@@ -26,7 +26,7 @@ namespace Escola.Dominio.Alunos
         private readonly List<Inscricao> _inscricoes;
 
         public NomeAluno Nome { get; private set; }
-        public Email Email { get;  }        
+        public Email Email { get; }
         public DateTime DataNascimento { get; private set; }
         public ESexo Sexo { get; }
         public int Idade(DateTime quando) => DataNascimento.GetAge(quando);
@@ -39,7 +39,7 @@ namespace Escola.Dominio.Alunos
             var sexoResultado = sexo.ToEnum<ESexo>();
             if (Result.Combine(nomeResultado, emailResultado, sexoResultado) is var resultado && resultado.IsFailure)
                 return Result.Failure<Aluno>(resultado.Error);
-            if(dataNascimento >= DateTime.Now)
+            if (dataNascimento >= DateTime.Now)
                 return Result.Failure<Aluno>("Data de nascimento deve ser menor que hoje");
             return Result.Ok(new Aluno(0, nomeResultado.Value, emailResultado.Value, dataNascimento, sexoResultado.Value, null));
         }
@@ -65,9 +65,18 @@ namespace Escola.Dominio.Alunos
         {
             if (turma.PossoFazerInscrever(this, inscricaoEm) is var resultado && resultado.IsFailure)
                 return Result.Failure(resultado.Error);
-            _inscricoes.Add( Inscricao.Criar(turma.Id, turma.RecuperarDataEncerramento(inscricaoEm)));
+            _inscricoes.Add(Inscricao.Criar(turma.Id, turma.RecuperarDataEncerramento(inscricaoEm)));
             turma.IncrementarInscricoes();
             return Result.Ok();
         }
+
+        #region Dapper Methods
+        public Aluno DefinirId(long id) => new Aluno(id, Nome, Email, DataNascimento, Sexo, null);
+        public Result RecuperarMinhasInscricoes(IEnumerable<Inscricao> inscricoes)
+        {
+            _inscricoes.AddRange(inscricoes);
+            return Result.Ok();
+        }
+        #endregion
     }
 }
