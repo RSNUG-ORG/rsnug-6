@@ -2,6 +2,7 @@
 using Dapper;
 using Escola.Dominio.Alunos;
 using Escola.Dominio.Shared;
+using Escolas.Infra.Dapper.POCO;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -18,29 +19,32 @@ namespace Escolas.Infra.Dapper.Repositorios
             _connection = connection;
         }
 
-        public Task<Aluno> AdicionarAsync(Aluno aluno)
+        public async Task<Aluno> AdicionarAsync(Aluno aluno)
         {
 
             string query = QueryReader.GetQuery("Queries", "AdicionarAluno");
-            Task<long> insertedId = _connection.ExecuteScalarAsync<long>(query, aluno);
-            return insertedId.ContinueWith((id) => aluno.DefinirId(id.Result));            
+            long insertedId = await _connection.ExecuteScalarAsync<long>(query, aluno);
+            return aluno.DefinirId(insertedId);
         }
 
-        public Task<Maybe<Aluno>> RecuperarAsync(long id)
+        public async Task<Maybe<Aluno>> RecuperarAsync(long id)
         {
-            //TODO: Utilizar mapeamento aqui
-            throw new NotImplementedException();
+            string query = QueryReader.GetQuery("Queries", "Recuperar");
+            AlunoPoco aluno = await _connection.QueryFirstOrDefaultAsync<AlunoPoco>(query, new { id });
+            return Maybe<Aluno>.From(aluno.BuildAluno());
         }
 
-        public Task<Maybe<Aluno>> RecuperarPorEmailAsync(Email email)
+        //Exemplo de recuperação no braço
+        public async Task<Maybe<Aluno>> RecuperarPorEmailAsync(Email email)
         {
             string query = QueryReader.GetQuery("Queries", "RecuperarAlunoPorEmail");
-            Task<IEnumerable<Aluno>> alunoByEmail = _connection.QueryAsync<long, string, string, string, DateTime, string, Aluno>(query, (id, primeiroNome, sobreNome, email, dataNascimento, sexo) =>
+            IEnumerable<Aluno> alunoByEmail = await _connection.QueryAsync<long, string, string, string, DateTime, string, Aluno>(query, (id, primeiroNome, sobreNome, email, dataNascimento, sexo) =>
             {
                 Aluno recoveredAluno = Aluno.Criar(primeiroNome, sobreNome, email, dataNascimento, sexo).Value.DefinirId(id);
                 return recoveredAluno;
             });
-            return alunoByEmail.ContinueWith((alunos) =>  alunos.Result.TryFirst());            
+
+            return alunoByEmail.TryFirst();
         }
     }
 }

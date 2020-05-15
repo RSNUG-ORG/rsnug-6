@@ -9,7 +9,7 @@ namespace Escola.Dominio.Alunos
 {
     public sealed class Aluno : Entity
     {
-        private Aluno() 
+        private Aluno()
         {
             _inscricoes = new List<Inscricao>();
         }
@@ -65,7 +65,7 @@ namespace Escola.Dominio.Alunos
         {
             if (turma.PossoFazerInscrever(this, inscricaoEm) is var resultado && resultado.IsFailure)
                 return Result.Failure(resultado.Error);
-            _inscricoes.Add( Inscricao.Criar(turma.Id, turma.RecuperarDataEncerramento(inscricaoEm)));
+            _inscricoes.Add(Inscricao.Criar(turma.Id, turma.RecuperarDataEncerramento(inscricaoEm)));
             turma.IncrementarInscricoes();
             return Result.Ok();
         }
@@ -73,6 +73,5 @@ namespace Escola.Dominio.Alunos
         #region Dapper Methods
         public Aluno DefinirId(long id) => new Aluno(id, Nome, Email, DataNascimento, Sexo, null);
         #endregion
-        }
     }
 }
